@@ -186,11 +186,13 @@ function useLocalWorker({
 						(value) => [value.name, value.class_name]
 					)
 				),
+				d1Databases: bindings.d1_databases?.map((db) => db.binding),
 				...(localPersistencePath
 					? {
 							kvPersist: path.join(localPersistencePath, "kv"),
 							durableObjectsPersist: path.join(localPersistencePath, "do"),
 							cachePersist: path.join(localPersistencePath, "cache"),
+							d1Persist: path.join(localPersistencePath, "d1"),
 					  }
 					: {
 							// We mark these as true, so that they'll
@@ -316,6 +318,7 @@ function useLocalWorker({
 		ip,
 		bindings.durable_objects?.bindings,
 		bindings.kv_namespaces,
+		bindings.d1_databases,
 		bindings.vars,
 		bindings.services,
 		compatibilityDate,

@@ -31,6 +31,7 @@ type PagesDevArgs = {
 	binding?: (string | number)[];
 	kv?: (string | number)[];
 	do?: (string | number)[];
+	d1?: (string | number)[];
 	"live-reload": boolean;
 	"node-compat": boolean;
 };
@@ -78,6 +79,10 @@ export function Options(yargs: Argv): Argv<PagesDevArgs> {
 				description: "KV namespace to bind",
 				alias: "k",
 			},
+			d1: {
+				type: "array",
+				description: "D1 database to bind",
+			},
 			do: {
 				type: "array",
 				description: "Durable Object to bind (NAME=CLASS)",
@@ -113,6 +118,7 @@ export const Handler = async ({
 	binding: bindings = [],
 	kv: kvs = [],
 	do: durableObjects = [],
+	d1: d1s = [],
 	"live-reload": liveReload,
 	"node-compat": nodeCompat,
 	config: config,
@@ -246,7 +252,6 @@ export const Handler = async ({
 	const vars = getVarsForDev({
 		configPath: resolvePath(".dev.vars"),
 	} as Config);
-
 	const miniflare = new Miniflare({
 		port,
 		watch: true,
@@ -261,6 +266,8 @@ export const Handler = async ({
 		durableObjects: Object.fromEntries(
 			durableObjects.map((durableObject) => durableObject.toString().split("="))
 		),
+
+		d1Databases: d1s.map((d1) => d1.toString()),
 
 		// User bindings
 		bindings: {

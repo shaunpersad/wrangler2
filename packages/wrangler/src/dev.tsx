@@ -10,6 +10,7 @@ import { getVarsForDev } from "./dev/dev-vars";
 import { getEntry } from "./entry";
 import { logger } from "./logger";
 import { getAssetPaths, getSiteAssetPaths } from "./sites";
+import { identifyD1BindingsAsBeta } from "./worker";
 import { getZoneIdFromHost, getZoneForRoute, getHostFromRoute } from "./zones";
 import {
 	printWranglerBanner,
@@ -300,7 +301,6 @@ export async function devHandler(args: ArgumentsCamelCase<DevArgs>) {
 				"The --assets argument is experimental and may change or break at any time"
 			);
 		}
-
 		const upstreamProtocol =
 			args["upstream-protocol"] || config.dev.upstream_protocol;
 		if (upstreamProtocol === "http") {
@@ -323,6 +323,7 @@ export async function devHandler(args: ArgumentsCamelCase<DevArgs>) {
 			if (host) {
 				zoneId = await getZoneIdFromHost(host);
 			}
+
 			if (!zoneId && routes) {
 				const firstRoute = routes[0];
 				const zone = await getZoneForRoute(firstRoute);
@@ -390,6 +391,7 @@ export async function devHandler(args: ArgumentsCamelCase<DevArgs>) {
 						};
 					}
 				),
+				d1_databases: identifyD1BindingsAsBeta(configParam.d1_databases),
 				services: configParam.services,
 				unsafe: configParam.unsafe?.bindings,
 			};

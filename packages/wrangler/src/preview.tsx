@@ -8,6 +8,7 @@ import { getEntry } from "./entry";
 import { DeprecationError } from "./errors";
 import { logger } from "./logger";
 import { requireAuth } from "./user";
+import { identifyD1BindingsAsBeta } from "./worker";
 import {
 	isLegacyEnv,
 	getDevCompatibilityDate,
@@ -126,6 +127,7 @@ export async function previewHandler(args: ArgumentsCamelCase<PreviewArgs>) {
 				text_blobs: config.text_blobs,
 				data_blobs: config.data_blobs,
 				durable_objects: config.durable_objects,
+				d1_databases: identifyD1BindingsAsBeta(config.d1_databases),
 				r2_buckets: config.r2_buckets?.map(
 					({ binding, preview_bucket_name, bucket_name: _bucket_name }) => {
 						// same idea as kv namespace preview id,
