@@ -477,6 +477,7 @@ export async function startDev(args: ArgumentsCamelCase<DevArgs>) {
 					}
 					accountId={config.account_id}
 					assetPaths={assetPaths}
+					assetsConfig={config.assets}
 					port={args.port || config.dev.port || (await getLocalPort())}
 					ip={args.ip || config.dev.ip}
 					inspectorPort={args["inspector-port"] ?? (await getInspectorPort())}

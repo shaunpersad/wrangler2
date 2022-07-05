@@ -44,6 +44,7 @@ export type DevProps = {
 	crons: Config["triggers"]["crons"];
 	isWorkersSite: boolean;
 	assetPaths: AssetPaths | undefined;
+	assetsConfig: Config["assets"];
 	compatibilityDate: string;
 	compatibilityFlags: string[] | undefined;
 	usageModel: "bundled" | "unbound" | undefined;
@@ -156,6 +157,7 @@ function DevSession(props: DevSessionProps) {
 		nodeCompat: props.nodeCompat,
 		define: props.define,
 		noBundle: props.noBundle,
+		assets: props.assetsConfig,
 	});
 
 	return props.local ? (

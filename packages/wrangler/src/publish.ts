@@ -378,6 +378,7 @@ See https://developers.cloudflare.com/workers/platform/compatibility-dates for m
 						nodeCompat,
 						define: config.define,
 						checkFetch: false,
+						assets: config.assets,
 					}
 			  );
 
