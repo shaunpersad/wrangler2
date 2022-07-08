@@ -68,6 +68,7 @@ interface DevArgs {
 	logLevel?: "none" | "error" | "log" | "warn" | "debug";
 	showInteractiveDevSession?: boolean;
 	forceLocal?: boolean;
+	cfFetch?: boolean;
 	miniflareCLIOptions?: MiniflareCLIOptions;
 }
 
@@ -536,6 +537,7 @@ export async function startDev(
 					showInteractiveDevSession={args.showInteractiveDevSession}
 					forceLocal={args.forceLocal}
 					miniflareCLIOptions={args.miniflareCLIOptions}
+					cfFetch={args.cfFetch}
 				/>
 			);
 		}

@@ -54,7 +54,7 @@ async function buildMiniflareCLI(flags: BuildFlags = {}) {
 		outfile: "./miniflare-dist/index.mjs",
 		platform: "node",
 		format: "esm",
-		external: ["miniflare", "@miniflare/core"],
+		external: ["miniflare", "@miniflare/core", "chokidar"],
 		sourcemap: process.env.SOURCEMAPS !== "false",
 		define: {
 			"process.env.NODE_ENV": '"production"',
