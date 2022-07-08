@@ -6,7 +6,7 @@ import { unstable_dev } from "../api";
 import { FatalError } from "../errors";
 import { logger } from "../logger";
 import { buildFunctions } from "./build";
-import { pagesBetaWarning } from "./utils";
+import { CLEANUP, pagesBetaWarning } from "./utils";
 import type { ArgumentsCamelCase, Argv } from "yargs";
 
 type PagesDevArgs = {
@@ -199,7 +199,7 @@ export async function Handler({
 	await scriptReadyPromise;
 
 	//todo when this is not provided
-	await unstable_dev(
+	const { stop, waitUntilExit } = await unstable_dev(
 		scriptPath,
 		{
 			port,
@@ -236,4 +236,27 @@ export async function Handler({
 		},
 		true
 	);
+
+	waitUntilExit().then(() => {
+		console.log("MANUAL EXIT");
+		CLEANUP();
+		stop();
+		process.exit(0);
+	});
+
+	process.on("exit", () => {
+		console.log("EXIT");
+		CLEANUP();
+		stop();
+	});
+	process.on("SIGINT", () => {
+		console.log("SIGINT");
+		CLEANUP();
+		stop();
+	});
+	process.on("SIGTERM", () => {
+		console.log("SIGTERM");
+		CLEANUP();
+		stop();
+	});
 }
