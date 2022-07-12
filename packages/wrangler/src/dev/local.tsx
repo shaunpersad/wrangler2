@@ -37,7 +37,7 @@ interface LocalProps {
 }
 
 export function Local(props: LocalProps) {
-	console.log({ port: props.port, message: "in local" });
+	console.log({ port: props.port, pid: process.pid, message: "in local" });
 	const { inspectorUrl } = useLocalWorker(props);
 	useInspector({
 		inspectorUrl,
@@ -85,10 +85,14 @@ function useLocalWorker({
 		const abortController = new AbortController();
 		async function startLocalWorker() {
 			if (!bundle || !format) {
-				console.log({ port, message: "RETURNING EARLY" });
+				console.log({ port, pid: process.pid, message: "RETURNING EARLY" });
 				return;
 			}
-			console.log({ port, message: "WAITING FOR PORT READY" });
+			console.log({
+				port,
+				pid: process.pid,
+				message: "WAITING FOR PORT READY",
+			});
 
 			// port for the worker
 			await waitForPortToBeAvailable(port, {
@@ -96,7 +100,7 @@ function useLocalWorker({
 				timeout: 2000,
 				abortSignal: abortController.signal,
 			});
-			console.log({ port, message: "PORT READY" });
+			console.log({ port, pid: process.pid, message: "PORT READY" });
 
 			if (bindings.services && bindings.services.length > 0) {
 				throw new Error(
@@ -266,7 +270,7 @@ function useLocalWorker({
 			));
 			child.on("message", (message) => {
 				if (message === "ready") {
-					console.log({ port, message: "Firing onReady" });
+					console.log({ port, pid: process.pid, message: "Firing onReady" });
 					onReady?.();
 				}
 			});
@@ -325,7 +329,7 @@ function useLocalWorker({
 		return () => {
 			abortController.abort();
 			if (local.current) {
-				console.log({ port, message: "SHUTTING DOWN" });
+				console.log({ port, pid: process.pid, message: "SHUTTING DOWN" });
 				logger.log("⎔ Shutting down local server.");
 				local.current?.kill();
 				local.current = undefined;
