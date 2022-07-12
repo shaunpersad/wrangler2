@@ -251,6 +251,7 @@ export async function devHandler(args: ArgumentsCamelCase<DevArgs>) {
 
 export async function startDev(args: ArgumentsCamelCase<DevArgs>) {
 	let watcher: ReturnType<typeof watch> | undefined;
+	let port;
 	let rerender: (node: React.ReactNode) => void | undefined;
 	try {
 		if (args.logLevel) {
@@ -516,7 +517,7 @@ export async function startDev(args: ArgumentsCamelCase<DevArgs>) {
 			},
 			fetch: async (init?: RequestInit) => {
 				//TODO: we are not guaranteed to be assigned this port, we should fix this ASAP
-				const port = args.port || config.dev.port || (await getLocalPort());
+				port = args.port || config.dev.port || (await getLocalPort());
 				const address = args.ip || config.dev.ip || "localhost";
 
 				return await fetch(`http://${address}:${port}/`, init);
@@ -524,6 +525,7 @@ export async function startDev(args: ArgumentsCamelCase<DevArgs>) {
 		};
 	} finally {
 		await watcher?.close();
+		console.log({ port: port, message: "end of render" });
 	}
 }
 

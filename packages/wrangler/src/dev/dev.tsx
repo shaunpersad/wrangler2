@@ -138,11 +138,13 @@ type DevSessionProps = DevProps & {
 };
 
 function DevSession(props: DevSessionProps) {
+	// const [bundle, setBundle] = useState();
 	useCustomBuild(props.entry, props.build);
 
 	const directory = useTmpDir();
 
 	const bundle = useEsbuild({
+		port: props.port,
 		entry: props.entry,
 		destination: directory,
 		jsxFactory: props.jsxFactory,
@@ -158,6 +160,7 @@ function DevSession(props: DevSessionProps) {
 		noBundle: props.noBundle,
 	});
 
+	if (!directory || !bundle) return null;
 	return props.local ? (
 		<Local
 			name={props.name}
@@ -230,6 +233,7 @@ function useTmpDir(): string | undefined {
 			dir?.removeCallback();
 		};
 	}, [handleError]);
+
 	return directory?.name;
 }
 

@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"check:type": "tsc",
-		"test": "npx jest --forceExit"
+		"test": "npx jest --forceExit ports"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^3.2.0"
