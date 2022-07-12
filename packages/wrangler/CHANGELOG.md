@@ -1,5 +1,17 @@
 # wrangler
 
+## 2.0.19
+
+### Patch Changes
+
+- [#1457](https://github.com/cloudflare/wrangler2/pull/1457) [`de03f7f`](https://github.com/cloudflare/wrangler2/commit/de03f7fc044b3a7d90b3c762722ef90eceab6d09) Thanks [@rozenmd](https://github.com/rozenmd)! - fix: add r2Persist key to miniflare options
+
+  Closes #1454
+
+* [#1459](https://github.com/cloudflare/wrangler2/pull/1459) [`4e425c6`](https://github.com/cloudflare/wrangler2/commit/4e425c62da2a59e6aa3a78d654c252e177c2b6ad) Thanks [@sidharthachatterjee](https://github.com/sidharthachatterjee)! - fix: `wrangler pages publish` now more reliably retries an upload in case of a failure
+
+  When `wrangler pages publish` is run, we make calls to an upload endpoint which could be rate limited and therefore fail. We currently retry those calls after a linear backoff. This change makes that backoff exponential which should reduce the likelihood of subsequent calls being rate limited.
+
 ## 2.0.18
 
 ### Patch Changes
